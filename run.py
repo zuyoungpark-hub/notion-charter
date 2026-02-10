@@ -169,7 +169,7 @@ def main():
     point_layer = base.mark_point(size=55, filled=True)
     label_layer = base.mark_text(
         dy=-10,
-        fontSize=11,
+        fontSize=16,
         fontWeight="bold",
     ).encode(text=alt.Text("평균값:Q", format=".1f"))
 
