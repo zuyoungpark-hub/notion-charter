@@ -5,7 +5,6 @@ import altair as alt
 import os
 from streamlit.errors import StreamlitSecretNotFoundError
 
-
 def load_local_env(path=".env"):
     if not os.path.exists(path):
         return
@@ -153,7 +152,12 @@ def main():
             axis=alt.Axis(format="%Y-%m-%d", labelAngle=-35, grid=True),
         ),
         y=alt.Y("평균값:Q", title="일자별 평균값"),
-        color=alt.Color("지표:N", title="지표", scale=color_scale),
+        color=alt.Color(
+            "지표:N",
+            title="지표",
+            scale=color_scale,
+            legend=alt.Legend(orient="bottom"),
+        ),
         tooltip=[
             alt.Tooltip("date:T", title="날짜", format="%Y-%m-%d"),
             alt.Tooltip("지표:N", title="지표"),
