@@ -19,7 +19,7 @@ headers = {
     "Content-Type": "application/json",
 }
 
-st.title("운영 대시보드")
+st.title("연연주비 Dashboard")
 
 
 def extract_date_value(props):
