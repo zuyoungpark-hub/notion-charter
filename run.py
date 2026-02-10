@@ -137,6 +137,10 @@ def main():
         .mean(numeric_only=True)
         .sort_values("date")
     )
+    x_domain = [
+        daily_avg_df["date"].min() - pd.Timedelta(days=1),
+        daily_avg_df["date"].max() + pd.Timedelta(days=1),
+    ]
 
     plot_df = daily_avg_df.melt(id_vars="date", value_vars=chart_cols, var_name="지표", value_name="평균값")
 
@@ -149,6 +153,7 @@ def main():
         x=alt.X(
             "date:T",
             title="날짜",
+            scale=alt.Scale(domain=x_domain),
             axis=alt.Axis(format="%Y-%m-%d", labelAngle=-35, grid=True),
         ),
         y=alt.Y("평균값:Q", title="일자별 평균값"),
