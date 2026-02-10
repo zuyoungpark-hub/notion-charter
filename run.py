@@ -5,9 +5,35 @@ import altair as alt
 import os
 from streamlit.errors import StreamlitSecretNotFoundError
 
-# 1) 여기만 채우기
-NOTION_TOKEN = st.secrets.get("NOTION_TOKEN") or os.getenv("NOTION_TOKEN")
-DATABASE_ID = st.secrets.get("DATABASE_ID") or os.getenv("DATABASE_ID")
+
+def load_local_env(path=".env"):
+    if not os.path.exists(path):
+        return
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            for raw in f:
+                line = raw.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, value = line.split("=", 1)
+                key = key.strip()
+                value = value.strip().strip('"').strip("'")
+                if key and key not in os.environ:
+                    os.environ[key] = value
+    except OSError:
+        pass
+
+
+def read_secret(name: str):
+    env_val = os.getenv(name)
+    if env_val:
+        return env_val
+    try:
+        return st.secrets[name]
+    except (StreamlitSecretNotFoundError, KeyError):
+        return None
+
+
 def extract_date_value(props):
     # 1) 기존 키 우선
     date_prop = props.get("date")
